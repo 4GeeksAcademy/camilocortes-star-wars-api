@@ -1,45 +1,65 @@
+import { element } from "prop-types";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			people: [],
+			planets: [],
+			starships: [],
+			endPoints: ["people", "planets", "starships"],
+			infoDetail: "",
+			infoId: "",
+			favoriteArray: [],
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			getInfoCard: async (endPoint) => {
+				const requestOptions = {
+					method: "GET",
+					redirect: "follow"
+				};
+				try {
+					const response = await fetch(`https://www.swapi.tech/api/${endPoint}`, requestOptions);
+					const result = await response.json();
+					const detailedPeople = await Promise.all
+						(
+							result.results.map(async (personAllInfo) => {
+								const detailResponse = await fetch(`${personAllInfo.url}`, requestOptions);
+								const detailResult = await detailResponse.json();
+								return detailResult.result;
+							})
+						)
+					setStore({ [endPoint]: detailedPeople })
+				} catch (error) {
+					console.error(error);
+				}
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			getDetails: async (endPoint) => {
+				const requestOptions = {
+					method: "GET",
+					redirect: "follow"
+				};
+				try {
+					const response = await fetch(`${endPoint}`, requestOptions);
+					const result = await response.json();
+					setStore({ infoDetail: result.result.properties });
+					const store = getStore()
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
+				} catch (error) {
+					console.error(error);
+				}
+			},
+			setFavoriteArray: (newFavorite) => {
+				const store = getStore()
+				setStore({ favoriteArray: store.favoriteArray.concat([newFavorite]) })
+			},
+			deleteFavorite: (name) => {
+				const store = getStore()
+				const newFavoriteArray = store.favoriteArray.filter((element) => {
+					return name !== element
 				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
+				setStore({ favoriteArray: newFavoriteArray })
+			},
 		}
-	};
-};
-
+	}
+}
 export default getState;
