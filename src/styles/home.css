@@ -1,0 +1,43 @@
+.bi-heart-fill{
+    color:blue;   
+   }
+   
+   .bi-heart:hover{
+       transition: 0.5s;
+     color:darkblue;
+   }
+   
+   i{
+       cursor: pointer;
+   }
+   p{
+       margin-bottom: 7px;
+   }
+   .scrollmenu {
+       display: flex;
+       overflow-x: auto
+   }
+   .card{
+       min-width: 18rem
+   }.bi-heart-fill{
+    color:blue;   
+   }
+   
+   .bi-heart:hover{
+       transition: 0.5s;
+     color: goldenrod;
+   }
+   
+   i{
+       cursor: pointer;
+   }
+   p{
+       margin-bottom: 7px;
+   }
+   .scrollmenu {
+       display: flex;
+       overflow-x: auto
+   }
+   .card{
+    min-width: 18rem
+}

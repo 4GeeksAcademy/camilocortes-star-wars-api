@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
@@ -8,7 +9,7 @@ export const Navbar = () => {
 		actions.deleteFavorite(e.target.parentElement.firstChild.textContent);
 	}
 	return (
-		<nav className="navbar navbar-light bg-light p-0">
+		<nav className="navbar sticky-top  navbar-light bg-light p-0">
 			<Link to="/">
 				<img src="https://cdn.freebiesupply.com/logos/large/2x/star-wars-logo-png-transparent.png" style={{ width: "6rem" }} className="navbar-brand mx-5 p-0" />
 			</Link>

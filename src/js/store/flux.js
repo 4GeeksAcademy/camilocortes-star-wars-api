@@ -7,9 +7,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			planets: [],
 			starships: [],
 			endPoints: ["people", "planets", "starships"],
-			infoDetail: "",
-			infoId: "",
+			infoDetail: [],
 			favoriteArray: [],
+			
 		},
 		actions: {
 			getInfoCard: async (endPoint) => {
@@ -18,17 +18,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 					redirect: "follow"
 				};
 				try {
-					const response = await fetch(`https://www.swapi.tech/api/${endPoint}`, requestOptions);
-					const result = await response.json();
-					const detailedPeople = await Promise.all
-						(
-							result.results.map(async (personAllInfo) => {
-								const detailResponse = await fetch(`${personAllInfo.url}`, requestOptions);
-								const detailResult = await detailResponse.json();
-								return detailResult.result;
-							})
-						)
-					setStore({ [endPoint]: detailedPeople })
+					if (JSON.parse(localStorage.getItem([endPoint])) === null) {
+						const response = await fetch(`https://www.swapi.tech/api/${endPoint}`, requestOptions);
+						const result = await response.json();
+						const detailedPeople = await Promise.all
+							(
+								result.results.map(async (personAllInfo) => {
+									const detailResponse = await fetch(`${personAllInfo.url}`, requestOptions);
+									const detailResult = await detailResponse.json();
+									return detailResult.result;
+								})
+							)
+						localStorage.setItem([endPoint], JSON.stringify(detailedPeople));
+						setStore({ [endPoint]: detailedPeople })
+					} else {
+						setStore({ [endPoint]: JSON.parse(localStorage.getItem([endPoint])) })
+					}
 				} catch (error) {
 					console.error(error);
 				}
@@ -41,9 +46,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const response = await fetch(`${endPoint}`, requestOptions);
 					const result = await response.json();
-					setStore({ infoDetail: result.result.properties });
-					const store = getStore()
-
+					setStore({ infoDetail: result.result.properties });					
 				} catch (error) {
 					console.error(error);
 				}
@@ -59,6 +62,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 				setStore({ favoriteArray: newFavoriteArray })
 			},
+			
 		}
 	}
 }

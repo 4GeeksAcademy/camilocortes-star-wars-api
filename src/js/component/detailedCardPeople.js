@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 
-export const DetailedCard = () => {
+export const DetailedCardPeople = (props) => {
     const { store } = useContext(Context)
 
     return (
         <div className="container">
             <div className="row">
                 <div className="col-6">
-                    <img src="https://www.pizzaraj.sk/wp-content/uploads/2016/03/800x600-ph-1.jpg" style={{ width: "600px" }} />
+                <img src={`https://starwars-visualguide.com/assets/img/characters/${props.params.id}.jpg`} style={{ width: "400px" }} />
                 </div>
                 <div className="col-6">
                     <h1>{store.infoDetail.name}</h1>
@@ -16,13 +16,14 @@ export const DetailedCard = () => {
                 </div>
             </div>
             <hr />
-            <div className="row details">
+            <div className="row ">
                 <div className="col-2">
+                    <h3>Name</h3>
                     <p>{store.infoDetail.name}</p>
                 </div>
                 <div className="col-2">
                     <h3>Birthday Year</h3>
-                    {/* <p>{store.infoDetail}</p> */}
+                    <p>{store.infoDetail.birth_year}</p>
                 </div>
                 <div className="col-2">
                     <h3>Gender</h3>
@@ -30,11 +31,11 @@ export const DetailedCard = () => {
                 </div>
                 <div className="col-2">
                     <h3>Height</h3>
-                    {/* <p>{store.infoDetail}</p> */}
+                    <p>{store.infoDetail.height}</p>
                 </div>
                 <div className="col-2">
                     <h3>Skin Color</h3>
-                    {/* <p>{store.infoDetail}</p> */}
+                    <p>{store.infoDetail.skin_color}</p>
                 </div>
                 <div className="col-2">
                     <h3>Eye Colors</h3>
